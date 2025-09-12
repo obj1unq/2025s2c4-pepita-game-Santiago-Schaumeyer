@@ -1,12 +1,15 @@
 import comidas.*
 import wollok.game.*
 import extras.*
+import direcciones.*
+
 
 object pepita {
 	var energia = 100
 	var property position = game.at(0,1)
 	const predador = silvestre
-	const hogar = nido	
+	const hogar = nido
+	const joules = 9
 	
 	method image() {
 	  if (self.estaAtrapada()) {
@@ -28,7 +31,7 @@ object pepita {
 	method estaSobre(alguien) {
 		return self.position() == alguien.position()
 	}	
-	
+
 	method text() = "Energia: \n" + energia 
 
 	method texColor() = "FF0000"
@@ -37,8 +40,17 @@ object pepita {
 		energia = energia + comida.energiaQueOtorga()
 	}
 
+	method energiaNecesaria(kms) {
+		return joules * kms
+	}
+
 	method volar(kms) {
-		energia = energia - 10 - kms 
+		energia -= self.energiaNecesaria(kms) 
+	}
+
+	method moverDireccion(direccion) {
+		self.volar(1)
+		position = direccion.siguiente(position)
 	}
 	
 	method energia() {
