@@ -1,9 +1,15 @@
 import pepita.*
 import wollok.game.*
 
-
 object arriba {
-    method siguiente(position) = position.up(1)
+    method siguiente(position) {
+        if (position.y() < game.height() - 1) {
+            return position.up(1)
+        }
+        else{
+            return position
+        }
+    }
 }
 
 object abajo {

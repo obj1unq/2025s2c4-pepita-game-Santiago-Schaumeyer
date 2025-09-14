@@ -1,3 +1,4 @@
+import randomizer.*
 import comidas.*
 import wollok.game.*
 import extras.*
@@ -12,7 +13,7 @@ object pepita {
 	const joules = 9
 	
 	method image() {
-	  if (self.estaAtrapada()) {
+	  if (self.estaAtrapada() || energia < joules) {
 		return "pepita-gris.png"
 	  } else if ( self.estaEnCasa() ) {
 		return "pepita-grande.png"
@@ -37,7 +38,9 @@ object pepita {
 	method texColor() = "FF0000"
 
 	method comer(comida) {
-		energia = energia + comida.energiaQueOtorga()
+		if(position == comida.position()){
+			energia = energia + comida.energiaQueOtorga()
+		}
 	}
 
 	method energiaNecesaria(kms) {
@@ -49,10 +52,12 @@ object pepita {
 	}
 
 	method moverDireccion(direccion) {
-		self.volar(1)
-		position = direccion.siguiente(position)
+		if((energia > joules)){
+			self.volar(1)
+			position = direccion.siguiente(position)	
+		} 
 	}
-	
+
 	method energia() {
 		return energia
 	}
