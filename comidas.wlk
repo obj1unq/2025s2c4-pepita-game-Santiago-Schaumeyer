@@ -3,7 +3,7 @@ import pepita.*
 
 
 object manzana {
-	const base= 5
+	const base= 20
 	var madurez = 1
 	var property position = game.at(5,5)
 	
@@ -15,7 +15,11 @@ object manzana {
 	
 	method madurar() {
 		madurez = madurez + 1
-		//madurez += 1
+	}
+
+	method chocaContraPepita(){
+		pepita.comer(self)
+		game.removeVisual(self)
 	}
 
 }
@@ -26,8 +30,12 @@ object alpiste {
 	method image() = "alpiste.png"
 
 	method energiaQueOtorga() {
-		return 20
+		return 50
 	} 
 
+	method chocaContraPepita(){
+		pepita.comer(self)
+		game.removeVisual(self)
+	}
 }
 

@@ -5,6 +5,10 @@ object nido {
     var property position = game.at(8,8)
 
     method image() = "nido.png"
+
+    method chocaContraPepita(){
+        pepita.estaEnCasa()
+    }
 }
 
 object silvestre {
@@ -15,6 +19,10 @@ object silvestre {
     method position() = game.at(self.x(), 0)
 
     method x()= 3.max(presa.position().x())
+
+    method chocaContraPepita(){
+        pepita.perder()
+    }
     
 }
 

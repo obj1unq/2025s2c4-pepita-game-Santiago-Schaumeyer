@@ -3,44 +3,67 @@ import comidas.*
 import wollok.game.*
 import extras.*
 import direcciones.*
-
+import niveles.*
 
 object pepita {
-	var energia = 100
-	var property position = game.at(0,1)
+	const energiaInicial = 100
+	const posicionInicial = game.at(0,1)
 	const predador = silvestre
 	const hogar = nido
 	const joules = 9
+
+	var energia = energiaInicial
+	var property position = posicionInicial
+	var property atrapada = false 
+
+	method text() = "Energia: \n" + energia 
+
+	method texColor() = "FF0000"
 	
-	method image() {
-	  if (self.estaAtrapada() || energia < joules) {
-		return "pepita-gris.png"
-	  } else if ( self.estaEnCasa() ) {
-		return "pepita-grande.png"
-	  } else {
-		return "pepita-base.png"}	
+	method energia() {
+		return energia
+	}
+
+
+	method inicializar(){
+		position = posicionInicial
+		energia = energiaInicial
+		atrapada = false	
+	}
+
+	// ESTADO DE PEPITA
+	method estado() {
+		return if (!self.puedeMover() || self.estaAtrapada()) { "pepita-gris.png" }
+		  else if (self.estaEnCasa()) { "pepita-grande.png"  }
+			else { "pepita-base.png" }
 	}
 
 	method estaAtrapada() {
 		return self.estaSobre(predador)
+
 	} 
 
 	method estaEnCasa(){
 		return self.estaSobre(hogar)
 	}
 
+	method image() {
+	  return self.estado()
+	}
+
 	method estaSobre(alguien) {
-		return self.position() == alguien.position()
-	}	
+		return position == alguien.position()
+	}
 
-	method text() = "Energia: \n" + energia 
+	//
+	// ACCIONES DE PEPITA
 
-	method texColor() = "FF0000"
+	method chocaContra(algo){
+		algo.chocaContraPepita()
+	}
 
 	method comer(comida) {
-		if(position == comida.position()){
-			energia = energia + comida.energiaQueOtorga()
-		}
+	  energia+= comida.energiaQueOtorga()
 	}
 
 	method energiaNecesaria(kms) {
@@ -51,15 +74,25 @@ object pepita {
 		energia -= self.energiaNecesaria(kms) 
 	}
 
+	method puedeMover() = energia >= self.energiaNecesaria(1) && not self.atrapada()
+
 	method moverDireccion(direccion) {
-		if((energia > joules)){
+		if((self.puedeMover())){
 			self.volar(1)
 			position = direccion.siguiente(position)	
+		} else {
+			self.perder()
 		} 
 	}
 
-	method energia() {
-		return energia
+	method perder(){
+		energia = 0
+		game.say(self, "Perdiste, presiona R para reiniciar")
+		keyboard.r().onPressDo({
+			game.clear()
+			nivel1.inicializar()
+			self.inicializar()
+			})
 	}
 }
 

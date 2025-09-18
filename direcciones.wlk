@@ -13,13 +13,34 @@ object arriba {
 }
 
 object abajo {
-    method siguiente(position) = position.down(1)
+    method siguiente(position) {
+        if (position.y() > 0) {
+            return position.down(1)
+        }
+        else{
+            return position
+        }
+    }
 }
 
 object izquierda {
-    method siguiente(position) = position.left(1)
+    method siguiente(position) {
+        if (position.x() > 0) {
+            return position.left(1)
+        }
+        else{
+            return position
+        }
+    }
 }
 
 object derecha {
-    method siguiente(position) = position.right(1)
+    method siguiente(position) {
+        if (position.x() < game.width() - 1) {
+            return position.right(1)
+        }
+        else{
+            return position
+        }
+    }
 }
