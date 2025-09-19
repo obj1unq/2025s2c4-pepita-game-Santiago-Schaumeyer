@@ -58,8 +58,8 @@ object pepita {
 	//
 	// ACCIONES DE PEPITA
 
-	method chocaContra(algo){
-		algo.chocaContraPepita()
+	method chocaContra(alguien){
+		alguien.chocaContraPepita()
 	}
 
 	method comer(comida) {
@@ -74,10 +74,12 @@ object pepita {
 		energia -= self.energiaNecesaria(kms) 
 	}
 
-	method puedeMover() = energia >= self.energiaNecesaria(1) && not self.atrapada()
+	method puedeVolar() = energia >= self.energiaNecesaria(1) 
+
+	method puedeMover() = self.puedeVolar() and !self.estaAtrapada()
 
 	method moverDireccion(direccion) {
-		if((self.puedeMover())){
+		if(self.puedeMover()){
 			self.volar(1)
 			position = direccion.siguiente(position)	
 		} else {
@@ -86,13 +88,7 @@ object pepita {
 	}
 
 	method perder(){
-		energia = 0
-		game.say(self, "Perdiste, presiona R para reiniciar")
-		keyboard.r().onPressDo({
-			game.clear()
-			nivel1.inicializar()
-			self.inicializar()
-			})
+		nivel1.reiniciar()
 	}
 }
 

@@ -26,4 +26,14 @@ object silvestre {
     
 }
 
+object muro {
+    var property position = game.at(4,5) 
+    
+    method image() = "muro.png"
+
+    method chocaContraPepita() {
+      return  
+    }
+}
+
 
