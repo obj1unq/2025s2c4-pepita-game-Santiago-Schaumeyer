@@ -1,5 +1,7 @@
 import pepita.*
 import wollok.game.*
+import niveles.*
+
 
 object nido {
     var property position = game.at(8,8)
@@ -8,6 +10,7 @@ object nido {
 
     method chocaContraPepita(){
         pepita.estaEnCasa()
+        nivel1.ganar()
     }
 }
 

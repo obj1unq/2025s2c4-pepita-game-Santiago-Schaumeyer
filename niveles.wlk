@@ -18,17 +18,29 @@ object nivel1 {
 	keyboard.left().onPressDo({pepita.moverDireccion(izquierda)})
 	keyboard.right().onPressDo({pepita.moverDireccion(derecha)})
 
+	game.onTick(2000, "pepitaGravedad", { => pepita.moverDireccion(abajo)})
+
 	game.onCollideDo(pepita,{alguien => pepita.chocaContra(alguien)})
 	
 	} 
 
+	method terminarJuego() {
+	  game.stop()
+	}
+
 	method reiniciar() {
-		pepita.energia() == 0 
-		game.say(self, "Perdiste, presiona R para reiniciar")
+		game.say(pepita, "perdiste, presiona R para reiniciar")
 		keyboard.r().onPressDo({
 			game.clear()
 			self.inicializar()
 			pepita.inicializar()
 			})
 	}
+
+	method ganar(){
+		game.say(pepita, "Ganaste")
+		game.schedule(2000, {=>self.terminarJuego()})
+	}
+
 }
+
